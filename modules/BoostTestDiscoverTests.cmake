@@ -134,6 +134,10 @@ same as the Boost.Test name; see also ``TEST_PREFIX`` and ``TEST_SUFFIX``.
 
 #]=======================================================================]
 
+if(CMAKE_VERSION VERSION_LESS "3.17")
+  set(__BOOSTTEST_DISCOVER_TESTS_DIR "${CMAKE_CURRENT_LIST_DIR}")
+endif()
+
 #------------------------------------------------------------------------------
 function(boosttest_discover_tests TARGET)
 
@@ -164,9 +168,15 @@ function(boosttest_discover_tests TARGET)
     set(__DISCOVERY_MODE ${BOOSTTEST_DISCOVER_TESTS_DISCOVERY_MODE})
   endif()
 
+  # Store the absolute path to the helper script.
   set(__BOOSTTEST_DISCOVER_TESTS_SCRIPT
     "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/BoostTestAddTests.cmake"
   )
+  if(CMAKE_VERSION VERSION_LESS "3.17")
+    set(__BOOSTTEST_DISCOVER_TESTS_SCRIPT
+      "${__BOOSTTEST_DISCOVER_TESTS_DIR}/BoostTestAddTests.cmake"
+    )
+  endif()
 
   get_property(
     has_counter
