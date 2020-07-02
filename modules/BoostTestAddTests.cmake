@@ -159,6 +159,9 @@ function(boosttest_discover_tests_impl)
         list(POP_BACK hierarchy)
       endforeach()
     endif()
+    if (former_level STREQUAL NaN)
+      set(hierarchy "")  # Clear hierarchy because we have at least one test.
+    endif()
     set(former_level ${next_level})  # Store depth-level for next loop-run.
 
     # Extract the name of the next test suite/case and determine if enabled.
